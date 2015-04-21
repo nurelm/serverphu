@@ -1,0 +1,8 @@
+# Sensitive database info that does not belong in public git repo
+/app/settings.php
+
+# Uploads
+files/
+
+# vim backup files
+*.swp
