@@ -2,13 +2,13 @@
 
 /**
  * @file
- * Bootstrap file for serverphu
+ * Bootstrap file for Serverphu
  *
  * This bootstraps the entire application and will provide a means to 
  * access all available modules.
  *
  * @category   Bootstrap
- * @package    serverphu
+ * @package    Serverphu
  * @author     Michael Sypolt <msypolt@transitguru.limited>
  * @copyright  Copyright (c) 2014
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt

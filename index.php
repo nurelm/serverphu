@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Calls the bootstrap file for the serverphu ticketing system
+ * Calls the bootstrap file for the Serverphu ticketing system
  *
  * This calls the bootstrap file, which would load appropriate themes, classes,
  * and modules.
@@ -26,7 +26,7 @@
  * 
  *
  * @category   Bootstrap
- * @package    serverphu
+ * @package    Serverphu
  * @author     Michael Sypolt <msypolt@transitguru.info>
  * @copyright  Copyright (c) 2014
  * @license    http://www.gnu.org/licenses/gpl-3.0.txt

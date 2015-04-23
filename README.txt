@@ -1,4 +1,4 @@
-This tool, named serverphu is a free and open source tool that can be used for 
+This tool, named Serverphu is a free and open source tool that can be used for 
 tracking tasks, server assets, and client accounts. See the CHANGELOG.txt 
 and LICENSE.txt for more information.
 
