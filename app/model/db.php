@@ -14,7 +14,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  * @version Release: @package_version@
  */
-class sphDb{
+class phuDb{
   public $output = array();   /**< Results that would be returned from query */
   public $error = 0;          /**< Error number that would be returned from query */
   public $message = '';       /**< Error or success message */
@@ -36,11 +36,11 @@ class sphDb{
    * @param string $name Database name
    */
   public function __construct($src = null){
-    $settings = new coreSettings();
+    $settings = new phuSettings();
     if ($src == null || $src == $settings->db['name']){
       $this->db = $settings->db;
     }
-    elseif(is_array($src) && isset($src['name']) && in_array($src['type'], $this->types)){
+    elseif(is_array($src) && in_array($src['type'], $this->types)){
       // Be careful with this feature where an array defining db connection can connect
       $this->db = array(
         'name' => null,
@@ -88,6 +88,7 @@ class sphDb{
       else{
         $port = ";port={$this->db['port']}";
       }
+      $this->error = 0;
 
       // sqlite setup
       if ($this->db['type'] == 'sqlite'){
@@ -114,14 +115,12 @@ class sphDb{
         $this->error = 9990;
         $this->message = 'Unsupported DB type';
       }
-      $this->pdo = new PDO($dsn, $username, $password, $options);
-      if ($conn->connect_errno){
+      try{
+        $this->pdo = new PDO($dsn, $username, $password, $options);
+      }
+      catch (Exception $e){
         $this->error = 9999;
         $this->message = 'Bad database settings';
-      }
-      else{
-        $this->error = 0;
-        $conn->close();
       }
     }
   }
@@ -198,21 +197,18 @@ class sphDb{
    * @return array $status error number, message, and insert id
    */
   public function write_raw($sql){
-    if (!is_null($this->name)){
-      $conn = new mysqli($this->host, $this->user, $this->pass, $this->name, $this->port);
-      $conn->query('SET CHARACTER SET utf8');
-      $conn->real_query($sql);
-      if ($conn->errno > 0){
-        $this->error = $conn->errno;
-        $this->message = "Error: {$conn->errno} ({$conn->error})";
+    if (!is_null($this->pdo)){
+      $this->affected_rows = $this->pdo->exec($sql);
+      if ($this->pdo->errorCode() > 0){
+        $this->error = $this->pdo->errorCode();
+        $msg = $this->pdo->errorInfo()[2];
+        $this->message = "Error: {$this->error} ({$msg})";
       }
       else{
         $this->error = 0;
         $this->message = 'Records successfully written';
       }
-      $this->insert_id = $conn->insert_id;
-      $this->affected_rows = $conn->affected_rows;
-      $conn->close();
+      $this->insert_id = $this->pdo->lastInsertId();
     }
   }
 
