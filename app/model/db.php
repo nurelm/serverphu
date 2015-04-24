@@ -5,8 +5,6 @@
  *
  * reads and writes to the database
  *
- * TODO: Convert this to use PDO instead of MySQLi
- * 
  * @category Database Access
  * @package Serverphu
  * @author Michael Sypolt <msypolt@transitguru.limited>
@@ -124,7 +122,6 @@ class phuDb{
       }
     }
   }
-
 
   /**
    * Simple database Write (uses raw write to do actual db write)
@@ -284,13 +281,12 @@ class phuDb{
    * @param string $id Optional field to use as index instead of numeric index
    */
   public function fetch_raw($sql, $id=NULL){
-    if (!is_null($this->name)){
-      $conn = new mysqli($this->host, $this->user, $this->pass, $this->name, $this->port);
-      $conn->query('SET CHARACTER SET utf8');
-      $conn->real_query($sql);
+    if (!is_null($this->pdo)){
+      $query = $this->pdo->query($sql);
       $this->output = array();
-      if ($conn->errno > 0){
-        $this->error = $conn->errno;
+      if ($query->errorCode() > 0){
+        $this->error = $query->errorCode();
+        $msg = $query->errorInfo()[2];
         $this->message = "Error: {$conn->errno} ({$conn->error})";
         $this->affected_rows = 0;
         
@@ -298,8 +294,7 @@ class phuDb{
       else{
         $this->error = 0;
         $this->message = 'Records successfully fetched';
-        $result = $conn->use_result();
-        while ($fetch = $result->fetch_assoc()){
+        foreach ($query as $fetch){
           if (!is_null($id) && key_exists($id, $fetch)){
             $out_id = $fetch[$id];
             $this->output[$out_id] = $fetch;
@@ -308,40 +303,9 @@ class phuDb{
             $this->output[] = $fetch;
           }
         }
-        $result->close();
-        $conn->close();
         $this->affected_rows = count($this->output);
       }
     }
   }
   
-  /**
-   * Multiple query, may be removed...
-   *
-   * @param string $database Database name
-   * @param string $sql Raw multi-statement SQL Query
-   */
-  public function multiquery($sql){
-    if (!is_null($this->name)){
-      $conn = new mysqli($this->host, $this->user, $this->pass, $this->name, $this->port);
-      $conn->query('SET CHARACTER SET utf8');
-      $conn->multi_query($sql);
-      if ($conn->errno > 0){
-        $this->error = $conn->errno;
-        $this->message = "Error: {$conn->errno} ({$conn->error})";
-        $this->affected_rows = 0;
-        $this->insert_id = null;
-      }
-      else{
-        $this->error = 0;
-        $this->message = 'Multi-Query done successfully';
-        $this->affected_rows = 0; // This is a lie, but need to reset the value
-        $this->insert_id = null;  // This is a lie, but need to reset the value
-      }
-      while ($conn->next_result()){
-        // Flush the multi queries to prevent issues  
-      }
-      $conn->close();
-    }
-  }
 }
