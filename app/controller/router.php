@@ -16,7 +16,20 @@
  *
  */
 class phuRouter{
-  public $uri = '/';    /**< Request URI to route the request */
+  /** Request URI to route the request */
+  public $uri = '/';
+  
+  /** 
+   * Valid routes for this controller 
+   *
+   * This maps the routes (key) to the controller (value)
+   */
+  public $routes = array(
+    '/' => 'Home',
+    '/login/' => 'Login',
+    '/logout/' => 'Logout',
+  );
+
 
   /**
    * Cosntructor
@@ -32,15 +45,13 @@ class phuRouter{
    * Routes the request based o URI
    */
   public function process(){
-    //Right now, this is hard coded to test
-    if($this->uri == '/'){
-      echo 'welcome home!';
-    }
-    elseif($this->uri == '/login/'){
-      echo 'login';
+    //See if array includes the class and the class exists
+    if (array_key_exists($this->uri,$this->routes) && class_exists('phu' . $this->routes[$this->uri], false)){
+      $name = 'phu' . $this->routes[$this->uri];
+      $controller = new $name();
     }
     else{
-      echo '404';
+      $controller = new phu404();
     }
   }
 }
