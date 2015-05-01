@@ -1,4 +1,4 @@
-<?php
+<?php  /* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
 
 /**
  * @file
@@ -25,9 +25,9 @@ class phuRouter{
    * This maps the routes (key) to the controller (value)
    */
   public $routes = array(
-    '/' => 'Home',
-    '/login/' => 'Login',
-    '/logout/' => 'Logout',
+    '/' => 'phuHome',
+    '/login/' => 'phuLogin',
+    '/logout/' => 'phuLogout',
   );
 
 
@@ -46,8 +46,8 @@ class phuRouter{
    */
   public function process(){
     //See if array includes the class and the class exists
-    if (array_key_exists($this->uri,$this->routes) && class_exists('phu' . $this->routes[$this->uri], false)){
-      $name = 'phu' . $this->routes[$this->uri];
+    if (array_key_exists($this->uri,$this->routes) && class_exists($this->routes[$this->uri], false)){
+      $name = $this->routes[$this->uri];
       $controller = new $name();
     }
     else{

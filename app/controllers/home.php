@@ -1,4 +1,4 @@
-<?php
+<?php  /* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
 
 /**
  * @file
@@ -15,7 +15,7 @@
  * @version Release: @package_version@
  *
  */
-class phuHome{
+class phuHome extends phuController{
   /**
    * Constructor
    *

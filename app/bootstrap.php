@@ -1,4 +1,4 @@
-<?php
+<?php  /* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
 
 /**
  * @file
@@ -15,18 +15,22 @@
  * @version    @package_version@
  */
 
-// Collect globals
+// Collect globals (see if it is a web, or commandline)
 if (isset($_SERVER) && isset($_SERVER['REQUEST_URI'])){
   $uri = $_SERVER['REQUEST_URI'];          /**< Request URI */
+}
+elseif (isset($_SERVER['argv'][1])){
+  $uri = $_SERVER['argv'][1];
 }
 else{
   $uri = '/';
 }
-// Load the settings file
+
+// Load the settings files
 require_once (DOC_ROOT . '/app/settings.php');
 
-// Load all models
-$PATH = DOC_ROOT . '/app/model';
+// Load the master classes
+$PATH = DOC_ROOT . '/app/classes';
 $includes = scandir($PATH);
 foreach ($includes as $include){
   if (is_file($PATH . '/' . $include) && $include != '.' && $include != '..' && fnmatch("*.php", $include)){
@@ -34,8 +38,8 @@ foreach ($includes as $include){
   }
 }
 
-// Load all views
-$PATH = DOC_ROOT . '/app/view';
+// Load all models
+$PATH = DOC_ROOT . '/app/models';
 $includes = scandir($PATH);
 foreach ($includes as $include){
   if (is_file($PATH . '/' . $include) && $include != '.' && $include != '..' && fnmatch("*.php", $include)){
@@ -44,7 +48,7 @@ foreach ($includes as $include){
 }
 
 // Load all the controllers
-$PATH = DOC_ROOT . '/app/controller';
+$PATH = DOC_ROOT . '/app/controllers';
 $includes = scandir($PATH);
 foreach ($includes as $include){
   if (is_file($PATH . '/' . $include) && $include != '.' && $include != '..' && fnmatch("*.php", $include)){
@@ -52,6 +56,15 @@ foreach ($includes as $include){
   }
 }
 
-// This will do more stuff later!
-echo "Loaded successfully!\n";
+// Load all views
+$PATH = DOC_ROOT . '/app/views';
+$includes = scandir($PATH);
+foreach ($includes as $include){
+  if (is_file($PATH . '/' . $include) && $include != '.' && $include != '..' && fnmatch("*.php", $include)){
+    require_once ($PATH . '/' . $include);
+  }
+}
+
+$router = new phuRouter($uri);
+$router->process();
 

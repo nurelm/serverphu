@@ -1,8 +1,8 @@
-<?php
+<?php  /* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
 
 /**
  * @file
- * phu404 Class
+ * phuLogout Class
  * 
  * Determines routing for all requests
  * TODO add in some permissions and such
@@ -15,7 +15,7 @@
  * @version Release: @package_version@
  *
  */
-class phu404{
+class phuLogout extends phuController{
   /**
    * Constructor
    *
@@ -23,8 +23,7 @@ class phu404{
    *
    */
   public function __construct($uri = '/'){
-    echo '404 (not found)';
+    echo 'See you soon.';
   }
  
 }
-
