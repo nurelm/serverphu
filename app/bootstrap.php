@@ -15,17 +15,6 @@
  * @version    @package_version@
  */
 
-// Collect globals (see if it is a web, or commandline)
-if (isset($_SERVER) && isset($_SERVER['REQUEST_URI'])){
-  $uri = $_SERVER['REQUEST_URI'];          /**< Request URI */
-}
-elseif (isset($_SERVER['argv'][1])){
-  $uri = $_SERVER['argv'][1];
-}
-else{
-  $uri = '/';
-}
-
 // Load the settings files
 require_once (DOC_ROOT . '/app/settings.php');
 
@@ -64,6 +53,51 @@ foreach ($includes as $include){
     require_once ($PATH . '/' . $include);
   }
 }
+
+// These variables are used to remove reliance on superglobals
+$uri = '/';         /**< Request URI */
+$post = array();    /**< Information from POST  */
+$get = array();     /**< Information GET */
+$files = array();   /**< Information from FILES (only when used in webserver) */
+$session = array(); /**< Information from User's SESSION */
+
+// Collect globals (see if it is a web, or commandline)
+if (isset($_SERVER) && isset($_SERVER['REQUEST_URI'])){
+  $uri = $_SERVER['REQUEST_URI'];          /**< Request URI */
+  if (isset($_POST)){
+    $post = $_POST;
+  }
+  if (isset($_GET)){
+    $get = $_GET;
+  }
+  if (isset($_FILES)){
+    $files = $_FILES;
+  }
+  if (isset($_SESSION)){
+    $session = $_SESSION;
+  }
+}
+elseif (isset($_SERVER['argv'][1])){
+  $string = $_SERVER['argv'][1];
+  if (strpos($string, '?') !== false){
+    $uri = strstr($string, '?', true);
+    $query = substr(strstr($string, '?', false),1);
+    parse_str($query, $get);
+  }
+  else{
+    $uri = $string;
+  }
+  if (isset($_SERVER['argv'][2])){
+    parse_str($_SERVER['argv'][2], $post);
+  }
+}
+echo "<pre>\n";
+echo $uri . "\n";
+echo "\nPOST ... \n";
+var_dump($post);
+echo "\nGET ... \n";
+var_dump($get);
+echo "\n</pre>";
 
 $router = new phuRouter($uri);
 $router->process();
