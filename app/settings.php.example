@@ -1,4 +1,4 @@
-<?php  /* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
+<?php  /* vim: set expandtab tabstop=2 shiftwidth=2 softtabstop=2 syntax=php: */
 
 /**
  * @file
@@ -6,7 +6,7 @@
  * 
  * This object loads default site settings
  *
- * @category Request Handling
+ * @category Configuration
  * @package Serverphu
  * @author Michael Sypolt <msypolt@transitguru.limited>
  * @copyright Copyright (c) 2015
