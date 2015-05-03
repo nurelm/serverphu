@@ -2,10 +2,9 @@
 
 /**
  * @file
- * phuLogin Class
- * 
- * Determines routing for all requests
- * TODO add in some permissions and such
+ * phuLoginController Class
+ *
+ * Controls login
  *
  * @category Request Handling
  * @package Serverphu
@@ -15,7 +14,7 @@
  * @version Release: @package_version@
  *
  */
-class phuLogin extends phuController{
+class phuLoginController extends phuController{
   /**
    * Constructor
    *

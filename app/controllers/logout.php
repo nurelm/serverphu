@@ -2,10 +2,9 @@
 
 /**
  * @file
- * phuLogout Class
+ * phuLogoutController Class
  * 
- * Determines routing for all requests
- * TODO add in some permissions and such
+ * Controlls logout events
  *
  * @category Request Handling
  * @package Serverphu
@@ -15,7 +14,7 @@
  * @version Release: @package_version@
  *
  */
-class phuLogout extends phuController{
+class phuLogoutController extends phuController{
   /**
    * Constructor
    *

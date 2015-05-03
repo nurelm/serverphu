@@ -2,10 +2,9 @@
 
 /**
  * @file
- * phuHome Class
+ * phuHomeController Class
  * 
- * Determines routing for all requests
- * TODO add in some permissions and such
+ * Controls home page
  *
  * @category Request Handling
  * @package Serverphu
@@ -15,15 +14,10 @@
  * @version Release: @package_version@
  *
  */
-class phuHome extends phuController{
-  /**
-   * Constructor
-   *
-   * @param string $uri Request URI for this request
-   *
-   */
-  public function __construct($uri = '/'){
-    echo 'Welcome Home';
+class phuHomeController extends phuController{
+  public function process(){
+    $model = new phuHomeModel();
+    $view = new phuHomeView($model);
+    $view->render();
   }
- 
 }

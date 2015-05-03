@@ -15,6 +15,10 @@
  *
  */
 class phuView{
+  public $model;   /**< phuModel that the view is being used for */
 
+  public function __construct($model){
+    $this->model = $model;
+  }
 }
 

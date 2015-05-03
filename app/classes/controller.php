@@ -17,7 +17,6 @@
 class phuController{
   public $model;  /**< Model that will be processed by the controller */
   public $view;   /**< View that the controller will use */
-  public $user;   /**< User that this controller is serving */
 
   /**
    * Constructor
@@ -34,16 +33,11 @@ class phuController{
     $this->post = $post;
     $this->files = $files;
     $this->get = $get;
-    
-    // No mater what controller we are using, load the user and his/her session
-    $user = new phuUser($token);
-    if ($user->id == 0 && isset($post['user']) && isset ($post['pass'])){
-      $user = new phuUser('', $post['user'], $post['pass']);
-    }
-    $this->user = $user;
   }
 
-
+  /**
+   * Process the controller
+   */
   public function process(){
 
   }

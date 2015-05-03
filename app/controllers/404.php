@@ -2,10 +2,9 @@
 
 /**
  * @file
- * phu404 Class
+ * phu404Controller Class
  * 
- * Determines routing for all requests
- * TODO add in some permissions and such
+ * Controls not found page
  *
  * @category Request Handling
  * @package Serverphu
@@ -15,16 +14,10 @@
  * @version Release: @package_version@
  *
  */
-class phu404 extends phuController{
-  /**
-   * Constructor
-   *
-   * @param string $uri Request URI for this request
-   *
-   */
-  public function __construct($uri = '/'){
-    echo '404 (not found)';
+class phu404Controller extends phuController{
+  public function process(){
+    $model = new phu404Model();
+    $view = new phu404View($model);
+    $view->render();
   }
- 
 }
-

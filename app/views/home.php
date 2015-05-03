@@ -2,11 +2,11 @@
 
 /**
  * @file
- * phuModel 
+ * phuHomeView Class
+ * 
+ * Create view for Home page
  *
- * Blueprint for a model 
- *
- * @category Data abstraction
+ * @category Rendering
  * @package Serverphu
  * @author Michael Sypolt <msypolt@transitguru.limited>
  * @copyright Copyright (c) 2015
@@ -14,9 +14,8 @@
  * @version Release: @package_version@
  *
  */
-class phuModel{
-  public function __construct(){
-
+class phuHomeView extends phuView{
+  public function render(){
+    echo $this->model->string;
   }
 }
-

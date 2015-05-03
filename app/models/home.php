@@ -2,11 +2,11 @@
 
 /**
  * @file
- * phuModel 
+ * phuHomeModel Class
+ * 
+ * Model for home page
  *
- * Blueprint for a model 
- *
- * @category Data abstraction
+ * @category Data Abstraction
  * @package Serverphu
  * @author Michael Sypolt <msypolt@transitguru.limited>
  * @copyright Copyright (c) 2015
@@ -14,9 +14,14 @@
  * @version Release: @package_version@
  *
  */
-class phuModel{
+class phuHomeModel extends phuModel{
+  
   public function __construct(){
+    phuModel::__construct();
+    $this->date = date('Y-m-d H:i:s');
+    $this->test = 'Michael Sypolt';
 
+    $this->string = $this->date . "\n" . $this->test . "\n";
   }
-}
 
+}

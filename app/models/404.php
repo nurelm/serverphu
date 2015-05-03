@@ -2,11 +2,11 @@
 
 /**
  * @file
- * phuModel 
+ * phu404Model Class
+ * 
+ * Model for not found page
  *
- * Blueprint for a model 
- *
- * @category Data abstraction
+ * @category Data Abstraction
  * @package Serverphu
  * @author Michael Sypolt <msypolt@transitguru.limited>
  * @copyright Copyright (c) 2015
@@ -14,9 +14,13 @@
  * @version Release: @package_version@
  *
  */
-class phuModel{
+class phu404Model extends phuModel{
+  
   public function __construct(){
-
+    phuModel::__construct();
+    $this->date = date('Y-m-d H:i:s');
+    $this->header = '404 Not Found';
+    $this->string = "404 Not Found\nDate: " . $this->date . "\n";
   }
-}
 
+}

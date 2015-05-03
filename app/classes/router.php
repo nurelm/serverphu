@@ -30,9 +30,9 @@ class phuRouter{
    * This maps the routes (key) to the controller (value)
    */
   public $routes = array(
-    '' => 'phuHome',
-    'login' => 'phuLogin',
-    'logout' => 'phuLogout',
+    '' => 'Home',
+    'login' => 'Login',
+    'logout' => 'Logout',
   );
 
 
@@ -56,12 +56,12 @@ class phuRouter{
    */
   public function process(){
     //See if array includes the class and the class exists
-    if (array_key_exists($this->path[1],$this->routes) && class_exists($this->routes["{$this->path[1]}"], false)){
-      $name = $this->routes["{$this->path[1]}"];
+    if (array_key_exists($this->path[1],$this->routes) && class_exists('phu' . $this->routes["{$this->path[1]}"] . 'Controller', false)){
+      $name = 'phu' . $this->routes["{$this->path[1]}"] . 'Controller';
       $controller = new $name($this->path);
     }
     else{
-      $controller = new phu404($this->path, $this->token, $this->post, $this->files, $this->get);
+      $controller = new phu404Controller($this->path, $this->token, $this->post, $this->files, $this->get);
     }
 
     //The controller is doing stuff
