@@ -56,10 +56,10 @@ foreach ($includes as $include){
 
 // These variables are used to remove reliance on superglobals
 $uri = '/';         /**< Request URI */
+$token = array();   /**< Information from User's COOKIE */
 $post = array();    /**< Information from POST  */
-$get = array();     /**< Information GET */
 $files = array();   /**< Information from FILES (only when used in webserver) */
-$session = array(); /**< Information from User's SESSION */
+$get = array();     /**< Information GET */
 
 // Collect globals (see if it is a web, or commandline)
 if (isset($_SERVER) && isset($_SERVER['REQUEST_URI'])){
@@ -73,8 +73,8 @@ if (isset($_SERVER) && isset($_SERVER['REQUEST_URI'])){
   if (isset($_FILES)){
     $files = $_FILES;
   }
-  if (isset($_SESSION)){
-    $session = $_SESSION;
+  if (isset($_COOKIE) && isset($_COOKIE['serverphu'])){
+    $token = $_COOKIE['serverphu'];
   }
 }
 elseif (isset($_SERVER['argv'][1])){
@@ -90,15 +90,12 @@ elseif (isset($_SERVER['argv'][1])){
   if (isset($_SERVER['argv'][2])){
     parse_str($_SERVER['argv'][2], $post);
   }
+  if (isset($_SERVER['argv'][3])){
+    $token = $_SERVER['argv'][3];
+  }
 }
-echo "<pre>\n";
-echo $uri . "\n";
-echo "\nPOST ... \n";
-var_dump($post);
-echo "\nGET ... \n";
-var_dump($get);
-echo "\n</pre>";
 
-$router = new phuRouter($uri);
+// The data gets through the router, which will route the request
+$router = new phuRouter($uri, $token, $post, $files, $get);
 $router->process();
 

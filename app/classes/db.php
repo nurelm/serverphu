@@ -23,7 +23,7 @@ class phuDb{
   protected $types = array( 
     'mysql', 
     'pgsql', 
-    'sqlite'
+    'sqlite',
   ); 
   protected $db = null;       /**< DB information for this object */
   protected $pdo = null;      /**< PDO object to use for querying */

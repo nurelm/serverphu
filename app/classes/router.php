@@ -16,18 +16,23 @@
  *
  */
 class phuRouter{
-  /** Request URI to route the request */
-  public $uri = '/';
   
+  public $uri;      /**< Request URI to route the request */
+  public $path;     /**< URI Exploded to components */
+  public $token;    /**< Token processed from $_COOKIE */
+  public $post;     /**< POST Request processed from bootstrap */
+  public $files;    /**< FILES array processed from bootstrap */
+  public $get;      /**< GET Request processed from bootstrap */
+
   /** 
    * Valid routes for this controller 
    *
    * This maps the routes (key) to the controller (value)
    */
   public $routes = array(
-    '/' => 'phuHome',
-    '/login/' => 'phuLogin',
-    '/logout/' => 'phuLogout',
+    '' => 'phuHome',
+    'login' => 'phuLogin',
+    'logout' => 'phuLogout',
   );
 
 
@@ -37,8 +42,13 @@ class phuRouter{
    * @param string $uri Request URI for this request
    *
    */
-  public function __construct($uri = '/'){
+  public function __construct($uri = '/', $token = '', $post = array(), $files = array(), $get = array()){
     $this->uri = $uri;
+    $this->path = explode('/', $uri);
+    $this->token = $token;
+    $this->post = $post;
+    $this->files = $files;
+    $this->get = $get;
   }
  
   /**
@@ -46,12 +56,15 @@ class phuRouter{
    */
   public function process(){
     //See if array includes the class and the class exists
-    if (array_key_exists($this->uri,$this->routes) && class_exists($this->routes[$this->uri], false)){
-      $name = $this->routes[$this->uri];
-      $controller = new $name();
+    if (array_key_exists($this->path[1],$this->routes) && class_exists($this->routes["{$this->path[1]}"], false)){
+      $name = $this->routes["{$this->path[1]}"];
+      $controller = new $name($this->path);
     }
     else{
-      $controller = new phu404();
+      $controller = new phu404($this->path, $this->token, $this->post, $this->files, $this->get);
     }
+
+    //The controller is doing stuff
+    $controller->process();
   }
 }
