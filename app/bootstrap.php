@@ -1,10 +1,10 @@
-<?php  /* vim: set autoindent expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
+<?php  /* vim: set ai et ts=2 sw=2 sts=2: */
 
 /**
  * @file
  * Bootstrap file for Serverphu
  *
- * This bootstraps the entire application and will provide a means to 
+ * This bootstraps the entire application and will provide a means to
  * access all available modules.
  *
  * @category   Bootstrap

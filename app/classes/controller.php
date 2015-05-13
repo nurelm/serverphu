@@ -1,4 +1,4 @@
-<?php  /* vim: set autoindent expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
+<?php  /* vim: set ai et ts=2 sw=2 sts=2: */
 
 /**
  * @file
@@ -17,6 +17,7 @@
 class phuController{
   public $model;  /**< Model that will be processed by the controller */
   public $view;   /**< View that the controller will use */
+  public $ajax;   /**< Boolean to indicate if we are using ajax or not */
 
   /**
    * Constructor
@@ -39,7 +40,13 @@ class phuController{
    * Process the controller
    */
   public function process(){
-
+    // Check to see if we are wrapping this in template
+    if (isset($this->post['ajax']) && $this->post['ajax'] == 1){
+      $this->ajax = true;
+    }
+    else{
+      $this->ajax = false;
+    }
   }
 }
 

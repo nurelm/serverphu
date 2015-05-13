@@ -1,4 +1,4 @@
-<?php  /* vim: set autoindent expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
+<?php  /* vim: set ai et ts=2 sw=2 sts=2: */
 
 /**
  * phuDb Class
@@ -190,8 +190,6 @@ class phuDb{
    * Raw database Write
    * 
    * @param string $sql Raw SQL Query
-   * 
-   * @return array $status error number, message, and insert id
    */
   public function write_raw($sql){
     if (!is_null($this->pdo)){
@@ -307,5 +305,4 @@ class phuDb{
       }
     }
   }
-  
 }

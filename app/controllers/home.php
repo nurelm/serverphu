@@ -1,4 +1,4 @@
-<?php  /* vim: set autoindent expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
+<?php  /* vim: set ai et ts=2 sw=2 sts=2: */
 
 /**
  * @file
@@ -16,8 +16,9 @@
  */
 class phuHomeController extends phuController{
   public function process(){
+    phuController::process();
     $model = new phuHomeModel();
-    $view = new phuHomeView($model);
+    $view = new phuHomeView($model, $this->ajax);
     $view->render();
   }
 }

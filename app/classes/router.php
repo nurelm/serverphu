@@ -1,4 +1,4 @@
-<?php  /* vim: set autoindent expandtab tabstop=2 shiftwidth=2 softtabstop=2: */
+<?php  /* vim: set ai et ts=2 sw=2 sts=2: */
 
 /**
  * @file
@@ -58,7 +58,7 @@ class phuRouter{
     //See if array includes the class and the class exists
     if (array_key_exists($this->path[1],$this->routes) && class_exists('phu' . $this->routes["{$this->path[1]}"] . 'Controller', false)){
       $name = 'phu' . $this->routes["{$this->path[1]}"] . 'Controller';
-      $controller = new $name($this->path);
+      $controller = new $name($this->path, $this->token, $this->post, $this->files, $this->get);
     }
     else{
       $controller = new phu404Controller($this->path, $this->token, $this->post, $this->files, $this->get);
