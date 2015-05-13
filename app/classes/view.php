@@ -19,6 +19,12 @@ class phuView{
   public $string;  /**< string that would be output */
   public $ajax;    /**< Boolean to determine if we are using AJAX */
 
+  /**
+   * Constructor
+   *
+   * @param phuModel $model Model used for the view
+   * @param int $ajax Set to 1 is ajax is used
+   */
   public function __construct($model, $ajax){
     $this->model = $model;
     if (isset($model->string)){
@@ -27,6 +33,9 @@ class phuView{
     $this->ajax = $ajax;
   }
 
+  /**
+   * Render the view
+   */
   public function render(){
     if (isset($this->ajax) && $this->ajax == 1){
       echo $this->string;

@@ -15,12 +15,14 @@
  *
  */
 class phuHomeModel extends phuModel{
-  
+
+  /**
+   * Constructor
+   */
   public function __construct(){
     phuModel::__construct();
     $this->date = date('Y-m-d H:i:s');
     $this->test = 'Michael Sypolt';
-
     $this->string = $this->date . "\n" . $this->test . "\n";
   }
 

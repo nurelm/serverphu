@@ -15,7 +15,10 @@
  *
  */
 class phu404Model extends phuModel{
-  
+
+  /**
+   * Constructor
+   */
   public function __construct(){
     phuModel::__construct();
     $this->date = date('Y-m-d H:i:s');
