@@ -31,8 +31,6 @@ class phuRouter{
    */
   public $routes = array(
     '' => 'Home',
-    'login' => 'Login',
-    'logout' => 'Logout',
   );
 
 
@@ -56,15 +54,22 @@ class phuRouter{
    */
   public function process(){
     //See if array includes the class and the class exists
-    if (array_key_exists($this->path[1],$this->routes) && class_exists('phu' . $this->routes["{$this->path[1]}"] . 'Controller', false)){
-      $name = 'phu' . $this->routes["{$this->path[1]}"] . 'Controller';
-      $controller = new $name($this->path, $this->token, $this->post, $this->files, $this->get);
+    if (array_key_exists($this->path[1],$this->routes)){
+      $name = $this->routes["{$this->path[1]}"];
+      $classname = 'phu' . $name . 'Controller';
+      if(class_exists($classname, false)){
+        $controller = new $classname($this->path, $this->token, $this->post, $this->files, $this->get, $name);
+      }
+      else{
+        $controller = new phuController($this->path, $this->token, $this->post, $this->files, $this->get, '');
+      }
     }
     else{
-      $controller = new phu404Controller($this->path, $this->token, $this->post, $this->files, $this->get);
+      $controller = new phuController($this->path, $this->token, $this->post, $this->files, $this->get, '');
     }
 
     //The controller is doing stuff
     $controller->process();
+    $controller->render();
   }
 }

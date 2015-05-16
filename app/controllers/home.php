@@ -17,8 +17,5 @@
 class phuHomeController extends phuController{
   public function process(){
     phuController::process();
-    $model = new phuHomeModel();
-    $view = new phuHomeView($model, $this->ajax);
-    $view->render();
   }
 }

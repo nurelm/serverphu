@@ -15,8 +15,10 @@
  *
  */
 class phuModel{
-  public function __construct(){
-
+  public $string = 'Page Not Found';    /**< String Representation of the model */
+  public $ajax = false;                 /**< Whether we are using ajax or not */
+  public function __construct($ajax){
+    $this->ajax = $ajax;
   }
 }
 

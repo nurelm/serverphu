@@ -16,7 +16,6 @@
  */
 class phuView{
   public $model;   /**< phuModel that the view is being used for */
-  public $string;  /**< string that would be output */
   public $ajax;    /**< Boolean to determine if we are using AJAX */
 
   /**
@@ -27,9 +26,6 @@ class phuView{
    */
   public function __construct($model, $ajax){
     $this->model = $model;
-    if (isset($model->string)){
-      $this->string = $this->model->string;
-    }
     $this->ajax = $ajax;
   }
 
@@ -38,11 +34,11 @@ class phuView{
    */
   public function render(){
     if (isset($this->ajax) && $this->ajax == 1){
-      echo $this->string;
+      echo $this->model->string;
     }
     else{
       echo "<html>\n";
-      echo $this->string;
+      echo $this->model->string;
       echo "\n</html>\n";
     }
   }
