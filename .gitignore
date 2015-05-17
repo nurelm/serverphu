@@ -1,5 +1,6 @@
 # Sensitive database info that does not belong in public git repo
 /app/settings.php
+/backup/
 
 # Uploads
 files/
