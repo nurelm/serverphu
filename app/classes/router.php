@@ -31,6 +31,8 @@ class phuRouter{
    */
   public $routes = array(
     '' => 'Home',
+    'js' => 'Js',
+    'css' => 'Css',
   );
 
 

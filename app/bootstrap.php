@@ -1,5 +1,4 @@
 <?php  /* vim: set ai et ts=2 sw=2 sts=2: */
-
 /**
  * @file
  * Bootstrap file for Serverphu
@@ -56,14 +55,14 @@ foreach ($includes as $include){
 
 // These variables are used to remove reliance on superglobals
 $uri = '/';         /**< Request URI */
-$token = array();   /**< Information from User's COOKIE */
+$token = '';   /**< Information from User's COOKIE */
 $post = array();    /**< Information from POST  */
 $files = array();   /**< Information from FILES (only when used in webserver) */
 $get = array();     /**< Information GET */
 
 // Collect globals (see if it is a web, or commandline)
 if (isset($_SERVER) && isset($_SERVER['REQUEST_URI'])){
-  $uri = $_SERVER['REQUEST_URI'];          /**< Request URI */
+  $uri = $_SERVER['REQUEST_URI'];
   if (isset($_POST)){
     $post = $_POST;
   }

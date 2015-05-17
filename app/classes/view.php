@@ -34,12 +34,54 @@ class phuView{
    */
   public function render(){
     if (isset($this->ajax) && $this->ajax == 1){
+      // Only show the string
       echo $this->model->string;
     }
     else{
+      // Load the page
+      echo "<!DOCTYPE html>\n";
       echo "<html>\n";
+      echo "  <head>\n";
+      echo "    <title>Test Script</title>\n";
+      $this->loadJS();
+      echo "\n";
+      $this->loadCSS();
+      echo "\n";
+      echo "  </head>\n";
+      echo "  <body>\n";
       echo $this->model->string;
-      echo "\n</html>\n";
+      echo "\n  </body>\n";
+      echo "</html>\n";
+    }
+  }
+
+  /**
+   * Load the javascripts
+   */
+  protected function loadJS(){
+    $DIR = DOC_ROOT . '/app/js';
+    $files = scandir($DIR);
+    if (is_array($files) && count($files)>2){
+      foreach($files as $file){
+        if($file !== '.' && $file !== '..' && is_file($DIR . '/' . $file) && fnmatch('*.js', $file)){
+          echo "    <script type=\"application/javascript\" src=\"/js/{$file}\"></script>\n";
+        }
+      }
+    }
+  }
+
+  /**
+   * Load the stylesheets
+   */
+  protected function loadCSS(){
+    $DIR = DOC_ROOT . '/app/css';
+    $files = scandir($DIR);
+    if (is_array($files) && count($files)>2){
+      foreach($files as $file){
+        if($files !== '.' && $file !== '..' && is_file($DIR . '/' . $file) && fnmatch('*.css', $file)){
+          echo "    <link rel=\"stylesheet\" type=\"text/css\" href=\"/css/{$file}\" />\n";
+        }
+      }
     }
   }
 }
