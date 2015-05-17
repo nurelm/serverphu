@@ -42,11 +42,13 @@ class phuView{
       echo "<!DOCTYPE html>\n";
       echo "<html>\n";
       echo "  <head>\n";
-      echo "    <title>Test Script</title>\n";
+      echo "    <!-- Loading Meta Tags -->\n";
+      echo "    <meta charset=\"utf-8\" />\n";
+      echo "    <title>{$this->model->title}</title>\n";
+      echo "    <!-- Loading Scripts -->\n";
       $this->loadJS();
-      echo "\n";
+      echo "    <!-- Loading Stylesheets -->\n";
       $this->loadCSS();
-      echo "\n";
       echo "  </head>\n";
       echo "  <body>\n";
       echo $this->model->string;

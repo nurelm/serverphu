@@ -2,11 +2,11 @@
 
 /**
  * @file
- * phuCxsController Class
+ * phuFileView Class
  * 
- * Controls css file requests
+ * Create view for file loading
  *
- * @category Request Handling
+ * @category Rendering
  * @package Serverphu
  * @author Michael Sypolt <msypolt@transitguru.limited>
  * @copyright Copyright (c) 2015
@@ -14,9 +14,11 @@
  * @version Release: @package_version@
  *
  */
-class phuCssController extends phuController{
-  public function process(){
-    phuController::process();
-    $this->model->getCss($this->path);
+class phuFileView extends phuView{
+  /**
+   * Render the view
+   */
+  public function render(){
+    echo $this->model->string;
   }
 }

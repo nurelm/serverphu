@@ -2,11 +2,11 @@
 
 /**
  * @file
- * phuJsView Class
+ * phuFileController Class
  * 
- * Create view for js loading
+ * Controls file requests
  *
- * @category Rendering
+ * @category Request Handling
  * @package Serverphu
  * @author Michael Sypolt <msypolt@transitguru.limited>
  * @copyright Copyright (c) 2015
@@ -14,11 +14,9 @@
  * @version Release: @package_version@
  *
  */
-class phuJsView extends phuView{
-  /**
-   * Render the view
-   */
-  public function render(){
-    echo $this->model->string;
+class phuFileController extends phuController{
+  public function process(){
+    phuController::process();
+    $this->model->getFile($this->path);
   }
 }
