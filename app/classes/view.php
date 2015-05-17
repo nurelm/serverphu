@@ -33,6 +33,11 @@ class phuView{
    * Render the view
    */
   public function render(){
+    if (is_array($this->model->headers) && count($this->model->headers)>0){
+      foreach($this->model->headers as $header){
+        header( $header, false, $this->model->httpstatus);
+      }
+    }
     if (isset($this->ajax) && $this->ajax == 1){
       // Only show the string
       echo $this->model->string;

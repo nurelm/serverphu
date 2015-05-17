@@ -21,6 +21,7 @@ class phuHomeModel extends phuModel{
    */
   public function __construct($ajax){
     phuModel::__construct($ajax);
+    $this->httpstatus = 200;
     $this->date = date('Y-m-d H:i:s');
     $this->test = 'Michael Sypolt';
     $this->string = $this->date . "\n" . $this->test . "\n";
