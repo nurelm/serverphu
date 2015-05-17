@@ -32,16 +32,19 @@ class phuFileModel extends phuModel{
   public function getFile($path){
     if (isset($path) && isset($path[1]) && $path[1] == 'js' && isset($path[2]) && fnmatch('*.js', $path[2]) && is_file(DOC_ROOT . '/app/js/' . $path[2])){
       $this->httpstatus = 200;
+      $this->headers = array(array('Content-Type: application/javascript', true));
       $filename = DOC_ROOT . '/app/js/' . $path[2];
       $this->string = file_get_contents($filename);
     }
     elseif (isset($path) && isset($path[1]) && $path[1] == 'css' && isset($path[2]) && fnmatch('*.css', $path[2]) && is_file(DOC_ROOT . '/app/css/' . $path[2])){
       $this->httpstatus = 200;
+      $this->headers = array(array('Content-Type: text/css', true));
       $filename = DOC_ROOT . '/app/css/' . $path[2];
       $this->string = file_get_contents($filename);
     }
     elseif (isset($path) && isset($path[1]) && $path[1] == 'file' && isset($path[2]) && is_file(DOC_ROOT . '/files/' . $path[2])){
       $this->httpstatus = 200;
+      $this->headers = array(array('Content-Type: application/pdf', true)); // I am lying...
       $filename = DOC_ROOT . '/files/' . $path[2];
       $this->string = file_get_contents($filename);
     }

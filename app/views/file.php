@@ -19,6 +19,7 @@ class phuFileView extends phuView{
    * Render the view
    */
   public function render(){
+    $this->sendHeaders();
     echo $this->model->string;
   }
 }

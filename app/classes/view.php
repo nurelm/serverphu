@@ -33,11 +33,7 @@ class phuView{
    * Render the view
    */
   public function render(){
-    if (is_array($this->model->headers) && count($this->model->headers)>0){
-      foreach($this->model->headers as $header){
-        header( $header, false, $this->model->httpstatus);
-      }
-    }
+    $this->sendHeaders();
     if (isset($this->ajax) && $this->ajax == 1){
       // Only show the string
       echo $this->model->string;
@@ -88,6 +84,17 @@ class phuView{
         if($files !== '.' && $file !== '..' && is_file($DIR . '/' . $file) && fnmatch('*.css', $file)){
           echo "    <link rel=\"stylesheet\" type=\"text/css\" href=\"/css/{$file}\" />\n";
         }
+      }
+    }
+  }
+
+  /**
+   * Send the headers
+   */
+  protected function sendHeaders(){
+    if (is_array($this->model->headers) && count($this->model->headers)>0){
+      foreach($this->model->headers as $header){
+        header($header[0], $header[1], $this->model->httpstatus);
       }
     }
   }

@@ -20,8 +20,10 @@ class phuModel{
   public $title = 'Serverphu';          /**< String to put in the title tags */
   public $httpstatus = 404;             /**< HTTP status number as an integer */ 
   
-  /** Additional HTTP headers to send */
-  public $headers = array('Content-Type: application/pdf');
+  /** Additional HTTP headers to send and flags about overwriting headers */
+  public $headers = array(
+    array('Content-Type: text/html', true),
+  );
   public function __construct($ajax){
     $this->ajax = $ajax;
   }
