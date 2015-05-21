@@ -1,4 +1,5 @@
-<?php  /* vim: set ai et ts=2 sw=2 sts=2: */
+<?php
+
 /**
  * @file
  * Bootstrap file for Serverphu
