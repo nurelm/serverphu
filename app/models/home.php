@@ -24,7 +24,14 @@ class phuHomeModel extends phuModel{
     $this->httpstatus = 200;
     $this->date = date('Y-m-d H:i:s');
     $this->test = 'Michael Sypolt';
-    $this->string = $this->date . "\n" . $this->test . "\n";
+    if ($ajax == 1){
+      $this->headers[] = array('Content-Type: text/json', true);
+      $vars_to_send = array($this->date, $this->test, $this->httpstatus, $this->headers);
+      $this->string = json_encode($vars_to_send);
+    }
+    else{
+      $this->string = $this->date . " " . $this->test;
+    }
   }
 
 }

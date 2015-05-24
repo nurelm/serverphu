@@ -65,7 +65,13 @@ $get = array();     /**< Information GET */
 if (isset($_SERVER) && isset($_SERVER['REQUEST_URI'])){
   $uri = $_SERVER['REQUEST_URI'];
   if (isset($_POST)){
-    $post = $_POST;
+    if (isset($_SERVER['CONTENT_TYPE']) && ($_SERVER['CONTENT_TYPE'] == 'application/json' || $_SERVER['CONTENT_TYPE'] == 'text/json')){
+      $raw = file_get_contents('php://input');
+      $post = json_decode($raw, true);
+    }
+    else{
+      $post = $_POST;
+    }
   }
   if (isset($_GET)){
     $get = $_GET;

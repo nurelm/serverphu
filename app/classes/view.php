@@ -40,21 +40,23 @@ class phuView{
     }
     else{
       // Load the page
-      echo "<!DOCTYPE html>\n";
-      echo "<html>\n";
-      echo "  <head>\n";
-      echo "    <!-- Loading Meta Tags -->\n";
-      echo "    <meta charset=\"utf-8\" />\n";
-      echo "    <title>{$this->model->title}</title>\n";
-      echo "    <!-- Loading Scripts -->\n";
-      $this->loadJS();
-      echo "    <!-- Loading Stylesheets -->\n";
-      $this->loadCSS();
-      echo "  </head>\n";
-      echo "  <body>\n";
-      echo $this->model->string;
-      echo "\n  </body>\n";
-      echo "</html>\n";
+?>
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Loading Meta Tags -->
+    <meta charset="utf-8" />
+    <title><?php echo $this->model->title; ?></title>
+    <!-- Loading Scripts -->
+<?php echo $this->loadJS(); ?>
+    <!-- Loading Stylesheets -->
+<?php echo $this->loadCSS(); ?>
+  </head>
+  <body>
+<?php echo $this->model->string; ?>
+  </body>
+</html>
+<?php
     }
   }
 
