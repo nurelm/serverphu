@@ -4,8 +4,8 @@
  * @file
  * Bootstrap file for Serverphu
  *
- * This bootstraps the entire application and will provide a means to
- * access all available modules.
+ * This bootstraps the entire application by collecting inputs and using them
+ * to access the router, which will then access appropriate controllers
  *
  * @category   Bootstrap
  * @package    Serverphu
@@ -64,20 +64,29 @@ $get = array();     /**< Information GET */
 // Collect globals (see if it is a web, or commandline)
 if (isset($_SERVER) && isset($_SERVER['REQUEST_URI'])){
   $uri = $_SERVER['REQUEST_URI'];
+  $method = strtolower($_SERVER['REQUEST_METHOD']);
+  if (isset($_SERVER['CONTENT_TYPE'])){
+    $content_type = $_SERVER['CONTENT_TYPE'];
+  }
+  else{
+    $content_type = 'text/plain';
+  }
   if (isset($_POST)){
-    if (isset($_SERVER['CONTENT_TYPE']) && ($_SERVER['CONTENT_TYPE'] == 'application/json' || $_SERVER['CONTENT_TYPE'] == 'text/json')){
+    if ($content_type == 'application/json' || $content_type  == 'text/json'){
       $raw = file_get_contents('php://input');
       $post = json_decode($raw, true);
     }
-    else{
+    elseif ($method == 'post'){
       $post = $_POST;
+      $files = $_FILES;
+    }
+    else{
+      $raw = file_get_contents('php://input');
+      parse_str($raw, $post);
     }
   }
   if (isset($_GET)){
     $get = $_GET;
-  }
-  if (isset($_FILES)){
-    $files = $_FILES;
   }
   if (isset($_COOKIE) && isset($_COOKIE['serverphu'])){
     $token = $_COOKIE['serverphu'];
@@ -101,7 +110,7 @@ elseif (isset($_SERVER['argv'][1])){
   }
 }
 
-// The data gets through the router, which will route the request
+// The data gets through the router, which will route request to proper controller
 $router = new phuRouter($uri, $token, $post, $files, $get);
 $router->process();
 

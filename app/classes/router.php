@@ -38,7 +38,7 @@ class phuRouter{
 
 
   /**
-   * Cosntructor
+   * Constructor
    *
    * @param string $uri Request URI for this request
    *
