@@ -1,0 +1,21 @@
+[
+  {
+    "method": "GET",
+    "url":    "http://transitguru.limited/"
+  },
+  {
+    "method": "GET",
+    "url":    "https://app.transitguru.limited/"
+  },
+  {
+    "method": "POST",
+    "url":    "http://librewebtools.org/login/",
+    "data":   "user=msypolt&pass=test"
+  },
+  {
+    "method": "POST",
+    "url":    "https://app.transitguru.limited/3/",
+    "data":   "{user=msypolt&pass=test}",
+    "headers":["Content-Type: application/json"]
+  }
+]
