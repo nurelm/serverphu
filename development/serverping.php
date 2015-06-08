@@ -106,7 +106,6 @@ elseif(isset($_SERVER['argv'][1])){
   }
   $json = file_get_contents($file);
   $sites = json_decode($json);
-  echo "Unpacked the file\n";
   if(is_array($sites)){
     foreach ($sites as $i => $site){
       //set defaults
@@ -130,7 +129,14 @@ elseif(isset($_SERVER['argv'][1])){
       // Make curl request
       $curl = new phuCurl($url, $method, $data, $headers);
       $curl->send();
-      echo "{$curl->status} {$curl->method} {$curl->url}\n";
+      echo "{$curl->status} {$curl->method} {$curl->url}";
+      if ($curl->status >= 300 && $curl->status <= 399){
+        echo " ------------> ";
+        if (isset($curl->headers['redirect_url'])){
+          echo $curl->headers['redirect_url'];
+        }
+      }
+      echo "\n";
     }
   }
   else{
