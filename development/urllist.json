@@ -1,21 +1,39 @@
-[
-  {
-    "method": "GET",
-    "url":    "http://transitguru.limited/"
+{ 
+  "ip": {
+    "ssd": [
+      "192.241.254.68"
+    ],
+    "debian8": [
+      "173.246.105.184"
+    ]
   },
-  {
-    "method": "GET",
-    "url":    "https://app.transitguru.limited/"
-  },
-  {
-    "method": "POST",
-    "url":    "http://librewebtools.org/login/",
-    "data":   "user=msypolt&pass=test"
-  },
-  {
-    "method": "POST",
-    "url":    "https://app.transitguru.limited/3/",
-    "data":   "{user=msypolt&pass=test}",
-    "headers":["Content-Type: application/json"]
-  }
-]
+  "list": [
+    {
+      "method": "GET",
+      "url":    "http://transitguru.limited/"
+    },
+    {
+      "method": "GET",
+      "url":    "https://app.transitguru.limited/"
+    },
+    {
+      "method": "POST",
+      "url":    "http://librewebtools.org/login/",
+      "data":   "user=msypolt&pass=test"
+    },
+    {
+      "method": "POST",
+      "url":    "https://app.transitguru.limited/3/",
+      "data":   "{user=msypolt&pass=test}",
+      "headers":["Content-Type: application/json"]
+    },
+    {
+      "method": "GET",
+      "url":    "http://ssd.transitguru.limited/"
+    },
+    {
+      "method": "GET",
+      "url":    "http://duckduckgo.com/"
+    }
+  ]
+}

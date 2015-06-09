@@ -106,8 +106,18 @@ elseif(isset($_SERVER['argv'][1])){
   }
   $json = file_get_contents($file);
   $sites = json_decode($json);
-  if(is_array($sites)){
-    foreach ($sites as $i => $site){
+  if(is_object($sites) && is_array($sites->list)){
+    $ips = array();
+    if (is_object($sites->ip)){
+      foreach($sites->ip as $server => $list){
+        if(is_array($list) && count($list)>0){
+          foreach($list as $i => $ip){
+            $ips[$ip] = "{$server}_{$i}";
+          }
+        }
+      }
+    }
+    foreach ($sites->list as $i => $site){
       //set defaults
       $url = '';
       $data = '';
@@ -129,14 +139,36 @@ elseif(isset($_SERVER['argv'][1])){
       // Make curl request
       $curl = new phuCurl($url, $method, $data, $headers);
       $curl->send();
-      echo "{$curl->status} {$curl->method} {$curl->url}";
-      if ($curl->status >= 300 && $curl->status <= 399){
-        echo " ------------> ";
+      if (isset($curl->headers['primary_ip'])){
+        $ip = str_pad($curl->headers['primary_ip'], 15, ' ');
+      }
+      else{
+        $ip = str_pad('', 15, ' ');
+      }
+      $count = 0;
+      $redirect_string = '';
+      while ($curl->status >= 300 && $curl->status <= 399 && $count < 30){
+        $count ++;
         if (isset($curl->headers['redirect_url'])){
-          echo $curl->headers['redirect_url'];
+          $newurl = $curl->headers['redirect_url'];
+          $curl = new phuCurl($newurl, $method, $data, $headers);
+          $curl->send();
+          if (isset($curl->headers['primary_ip'])){
+            $newip = str_pad($curl->headers['primary_ip'], 15, ' ');
+          }
+          else{
+            $newip = str_pad('', 15, ' ');
+          }
+          $redirect_string = " --redirect {$count}x--> {$newurl} at [{$newip}]";
         }
       }
-      echo "\n";
+      if (!array_key_exists(trim($ip), $ips)){
+        $no = 'no';
+      }
+      else{
+        $no = "  ";
+      }
+      echo "{$no} {$curl->status}  {$ip}  {$curl->method} {$curl->url} {$redirect_string}\n";
     }
   }
   else{
