@@ -107,6 +107,7 @@ elseif(isset($_SERVER['argv'][1])){
   $json = file_get_contents($file);
   $sites = json_decode($json);
   if(is_object($sites) && is_array($sites->list)){
+    // Look for IP list, just to check things
     $ips = array();
     if (is_object($sites->ip)){
       foreach($sites->ip as $server => $list){
@@ -117,6 +118,11 @@ elseif(isset($_SERVER['argv'][1])){
         }
       }
     }
+
+    $email = false;
+    $message = $log = '';
+
+    // Go through the list!
     foreach ($sites->list as $i => $site){
       //set defaults
       $url = '';
@@ -168,8 +174,30 @@ elseif(isset($_SERVER['argv'][1])){
       else{
         $no = "  ";
       }
-      echo "{$no} {$curl->status}  {$ip}  {$curl->method} {$curl->url} {$redirect_string}\n";
+      if (isset($site->statuses) && is_array($site->statuses) && !in_array($curl->status, $site->statuses)){
+        $email = true;
+        $list = implode(',',$site->statuses);
+        $message .= "{$curl->status} {$curl->url} (expected {$list})\n";
+      }
+
+      $log .= "{$no} {$curl->status}  {$ip}  {$curl->method} {$url} {$redirect_string}\n";
     }
+    if($email == true && is_object($sites->config) && $sites->config->send == true){
+      echo "I am emailing this!!!";
+      $headers = "From: {$sites->config->emailfrom}\r\nReply-To: {$sites->config->emailfrom}\r\n";
+      $to = $sites->config->emailto;
+      if (isset($sites->config->emailcc) && trim($sites->config->emailcc != '')){
+        $headers .= "Cc: {$sites->config->emailcc}";
+      }
+      if (isset($sites->config->emailbcc)){
+        $headers .= "Bcc: {$sites->config->emailcc}";
+      }
+      $subject = $sites->config->emailsubject;
+      $headers .= "\r\nContent-Type: text/plain\r\n";
+      $message .= "\n\nFull Log:\n\n{$log}\n";
+      $mail_sent = @mail($to, $subject, $message, $headers);
+    }
+    echo $log;
   }
   else{
     echo "The file is improperly formed\n";

@@ -1,4 +1,12 @@
 { 
+  "config": {
+    "send": true,
+    "emailto": "root@example.transitguru.limited",
+    "emailcc": "",
+    "emailbcc": "",
+    "emailfrom": "serverphu@example.transitguru.limited",
+    "emailsubject": "[Serverphu] Sites Down!"
+  },
   "ip": {
     "ssd": [
       "192.241.254.68"
@@ -9,6 +17,7 @@
   },
   "list": [
     {
+      "statuses": [200],
       "method": "GET",
       "url":    "http://transitguru.limited/"
     },
@@ -17,6 +26,7 @@
       "url":    "https://app.transitguru.limited/"
     },
     {
+      "statuses": [200,403],
       "method": "POST",
       "url":    "http://librewebtools.org/login/",
       "data":   "user=msypolt&pass=test"
