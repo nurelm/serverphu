@@ -194,7 +194,7 @@ elseif(isset($_SERVER['argv'][1])){
       }
       $subject = $sites->config->emailsubject;
       $headers .= "\r\nContent-Type: text/plain\r\n";
-      $message .= "\n\nFull Log:\n\n{$log}\n";
+      //$message .= "\n\nFull Log:\n\n{$log}\n";
       $mail_sent = @mail($to, $subject, $message, $headers);
     }
     echo $log;
