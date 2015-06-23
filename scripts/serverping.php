@@ -187,10 +187,10 @@ elseif(isset($_SERVER['argv'][1])){
       $headers = "From: {$sites->config->emailfrom}\r\nReply-To: {$sites->config->emailfrom}\r\n";
       $to = $sites->config->emailto;
       if (isset($sites->config->emailcc) && trim($sites->config->emailcc != '')){
-        $headers .= "Cc: {$sites->config->emailcc}";
+        $headers .= "Cc: {$sites->config->emailcc}\r\n";
       }
       if (isset($sites->config->emailbcc)){
-        $headers .= "Bcc: {$sites->config->emailcc}";
+        $headers .= "Bcc: {$sites->config->emailbcc}\r\n";
       }
       $subject = $sites->config->emailsubject;
       $headers .= "\r\nContent-Type: text/plain\r\n";
