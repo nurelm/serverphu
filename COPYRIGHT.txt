@@ -15,5 +15,5 @@ You should have received a copy of the GNU General Public License
 along with this program as the file LICENSE.txt; if not, please see
 http://www.gnu.org/licenses/gpl-3.0.txt.
 
-PHP implementation of the Ruby on Rails serverfu application designed
-by NuRelm Inc.
+Serverphu is a PHP implementation of the Ruby on Rails serverfu application 
+designed by Sam Shaaban of NuRelm Inc.

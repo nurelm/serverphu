@@ -1,13 +1,10 @@
-
-SQLITE REQUIREMENTS
--------------------
+# SQLite Requirements
 
 To use SQLite with your Serverphu installation, the following requirements must 
 be met: Server has PHP 5.5 or later with PDO, and the PDO SQLite driver must be
 enabled.
 
-SQLITE DATABASE CREATION
-------------------------
+## Create the Database
 
 The Serverphu installer will create the SQLite database for you. The only
 requirement is that the installer must have write permissions to the directory
