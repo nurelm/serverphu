@@ -193,7 +193,7 @@ elseif(isset($_SERVER['argv'][1])){
         $headers .= "Bcc: {$sites->config->emailbcc}\r\n";
       }
       $subject = $sites->config->emailsubject;
-      $headers .= "\r\nContent-Type: text/plain\r\n";
+      $headers .= "Content-Type: text/plain\r\n";
       //$message .= "\n\nFull Log:\n\n{$log}\n";
       $mail_sent = @mail($to, $subject, $message, $headers);
     }
