@@ -3,7 +3,7 @@
 /data/
 
 # Uploads
-files/
+/files/
 
 # vim backup files
 *.swp
