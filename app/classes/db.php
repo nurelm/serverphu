@@ -66,7 +66,7 @@ class phuDb{
     if ($src == null || $src == $settings->db['name']){
       $this->db = $settings->db;
     }
-    elseif(is_array($src) && in_array($src['type'], $this->types)){
+    elseif(is_array($src) && isset($src['type']) && in_array($src['type'], $this->types)){
       // Be careful with this feature where an array defining db connection can connect
       $this->db = array(
         'name' => null,

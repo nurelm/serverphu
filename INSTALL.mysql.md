@@ -2,47 +2,31 @@
 
 To use MySQL or MariaDB with your Serverphu installation, the following
 requirements must be met: Server has PHP 5.5 or later with PDO, and the PDO
-mysql driver must be enabled.
+mysql driver must be enabled. MariaDB 5.5 or greater must be installed or
+MySQL 5.5 or greater must be installed. The commands below are identical for
+either MySQL or MariaDB.
 
-## Create the MySQL Database
+You will need to log into mysql as root to create your database and
+mysql user if it hasn't already been created for you. Log into the mysql prompt
+with `sudo mysql` or `mysql -u root -p` depending on how you have root access
+configured. Once you see the mysql prompt, enter the following commands.
 
-This step is only necessary if you don't already have a database set up (e.g.,
-by your host). In the following examples, 'username' is an example MySQL user
-which has the CREATE and GRANT privileges. Use the appropriate user name for
-your system.
-
-First, you must create a new database for your Serverphu site (here,
-'databasename' is the name of the new database):
-
-```
-mysqladmin -u username -p create databasename
-```
-
-MySQL will prompt for the 'username' database password and then create the
-initial database files. Remember the password to enter in the app/settings.php
-config file. Next you must log in and set the access database rights:
-
-```
-mysql -u username -p
-```
-
-Again, you will be asked for the 'username' database password. At the MySQL
-prompt, enter the following command:
-```
-GRANT ALL PRIVILEGES ON databasename.* TO 'username'@'localhost' IDENTIFIED BY 'password';
+```mysql
+CREATE 'username'@'host' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON databasename.* TO 'username'@'host';
 FLUSH PRIVILEGES;
 ```
 
 where:
-
-`databasename` is the name of your database
-`username` is the username of your MySQL account
-`localhost` is the web server host where Serverphu's databasae is installed
-`password` is the password required for that username
+- `host` is the host where the application is connectiong (usually localhost)
+- `databasename` is the name of your database
+- `username` is the username of your MySQL account
+- `password` is the password required for that username
 
 Note: Unless the database user/host combination for your Serverphu installation
 has all of the privileges listed above you will not be able to install or run 
-Serverphu.
+Serverphu. This information should also be entered into the appropriate lines
+of the `app/settings.php` configuration file.
 
 If successful, MySQL will reply with:
 

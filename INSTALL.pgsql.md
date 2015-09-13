@@ -2,40 +2,25 @@
 
 To use PostgreSQL with your Serverphu installation, the following requirements
 must be met: Server has PHP 5.5 or later with PDO, and the PDO pgsql driver 
-must be enabled.
+must be enabled. It is recommended to use PostgreSQL v9.0 or later.
 
-Note that the database must be created with UTF-8 (Unicode) encoding.
+Note that the database must be created with UTF-8 (Unicode) encoding. The
+following commands must be made within the shell command line and not within
+`psql`. Make sure to take note of the password you enter when creating the user
+and put all relevant information in `app/settings.php`.
 
-## Create Database User
-
-This step is only necessary if you don't already have a user set up (e.g., by
-your host), or want to create a new user for use with Serverphu only. The
-following command creates a new user named 'username' and asks for a password
-for that user (make sure to remember that password so you can enter it in 
-app/settings.php):
 ```
-createuser --pwprompt --encrypted --no-createrole --no-createdb username
+sudo -u postgres createuser --pwprompt --encrypted --no-createrole --no-createdb username
+sudo -u postgres createdb --encoding=UTF8 --owner=username databasename
 ```
 
-If there are no errors, then the command was successful.
+where:
+- `postgres` is the default user that postgres uses for managing databases
+- `databasename` is the name of your database
+- `username` is the username of your MySQL account
 
-## Create Serverphu Database
+If there are no errors, then the commands were successful. If commands are not
+found, that means that PostgreSQL was not installed properly.
 
-This step is only necessary if you don't already have a database set up
-(e.g., by your host) or want to create a new database for use with Serverphu
-only. The following command creates a new database named 'databasename',
-which is owned by the previously created 'username':
-```
-createdb --encoding=UTF8 --owner=username databasename
-```
-
-If there are no errors, then the command was successful.
-
-## Create Schema
-
-Serverphu will need to run in the schema that you specify in 
-app/settings.php:
-```
-CREATE SCHEMA schema_name AUTHORIZATION username;
-```
-
+At this point, this application does not currently support custom schemas within
+the database.
