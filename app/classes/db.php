@@ -313,17 +313,23 @@ class phuDb{
     if (!is_null($this->pdo)){
       $query = $this->pdo->query($sql);
       $this->output = array();
-      if ($query->errorCode() > 0){
+      if (!$query){
+        $this->error = -99;
+        $msg = "Some undefined error occurred";
+        $this->message = "Error: {$this->error} ({$msg})";
+        $this->affected_rows = 0;
+      }
+      elseif ($query->errorCode() > 0){
         $this->error = $query->errorCode();
         $msg = $query->errorInfo()[2];
-        $this->message = "Error: {$conn->errno} ({$conn->error})";
+        $this->message = "Error: {$this->error} ({$msg})";
         $this->affected_rows = 0;
-        
+
       }
       else{
         $this->error = 0;
         $this->message = 'Records successfully fetched';
-        foreach ($query as $fetch){
+        while($fetch = $query->fetch(PDO::FETCH_ASSOC)){
           if (!is_null($id) && key_exists($id, $fetch)){
             $out_id = $fetch[$id];
             $this->output[$out_id] = $fetch;
