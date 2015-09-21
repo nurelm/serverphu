@@ -15,11 +15,6 @@
 
 Initial notes from https://en.wikibooks.org/wiki/SQL_Dialects_Reference
 
-Delimiters:
-`mysql_table`
-"pgsql_table"
-[sqlite_table]
-
 Auto Increment:
 Mysql:  CREATE TABLE t1 (col1 INT NOT NULL PRIMARY KEY AUTO_INCREMENT); 
 pgsql:  CREATE TABLE t1 (col1 SERIAL PRIMARY KEY);
@@ -36,8 +31,10 @@ Nearly all types are supported on each RDBMS except the following
 
 Other notes:
 
-FOREIGN KEYS are done differently in each RDBMS, and in SQLite, it can only be
-added when creating the table
+FOREIGN KEYS are done differently in each RDBMS:
+  MySQL: While creating or in a separate statment
+  Postgres: In a separate statement ONLY
+  SQLite:  While creating the table ONLY
 
  */
 class phuDb{
@@ -46,6 +43,8 @@ class phuDb{
   public $message = '';       /**< Error or success message */
   public $affected_rows = 0;  /**< Number of affected rows */
   public $insert_id = null;   /**< ID of record that was recently inserted */
+  public $opentick = null;    /**< Opening delimiter for table names and other environment */
+  public $closetick = null;   /**< Closing delimiter for table names and other environment */
   
   /** Types that are recognized by this DB connector */
   protected $types = array( 
@@ -122,6 +121,8 @@ class phuDb{
         $username = null;
         $password = null;
         $options = null;
+        $this->opentick = '[';
+        $this->closetick = ']';
       }
       // MySQL/MariaDB setup
       elseif ($this->db['type'] == 'mysql'){
@@ -129,6 +130,7 @@ class phuDb{
         $username = $this->db['user'];
         $password = $this->db['pass'];
         $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8');  
+        $this->opentick = $this->closetick = '`';
       }
       // PostgreSQL setup
       elseif ($this->db['type'] == 'pgsql'){
@@ -136,6 +138,7 @@ class phuDb{
         $username = null;
         $password = null;
         $options = null;
+        $this->opentick = $this->closetick = '"';
       }
       else{
         $this->error = 9990;
@@ -182,14 +185,14 @@ class phuDb{
       }
     }
     if (is_null($where)){
-      $field_string = implode('` , `',$fields);
+      $field_string = implode($this->closetick . ' , ' . $this->opentick,$fields);
       $value_string = implode(',', $values);
-      $sql = "INSERT INTO `$table` (`$field_string`) VALUES ($value_string)";
+      $sql = "INSERT INTO {$this->opentick}{$table}{$this->closetick} ({$this->opentick}{$field_string}{$this->closetick}) VALUES ($value_string)";
     }
     else{
       $queries = array();
       foreach ($values as $field => $value){
-        $queries[] = "`$field`=$value";
+        $queries[] = "{$this->opentick}{$field}{$this->closetick}=$value";
       }
       $wheres = array();
       foreach ($where as $field => $value){
@@ -207,9 +210,9 @@ class phuDb{
           $status['message'] = 'Bad input settings';
           return $status;
         }
-        $wheres[] = "`$field`=$value";
+        $wheres[] = "{$this->opentick}{$field}{$this->closetick}=$value";
       }
-      $sql = "UPDATE `$table` SET " . implode(" , ",$queries) . " WHERE " . implode(" AND ", $wheres);
+      $sql = "UPDATE {$this->opentick}{$table}{$this->closetick} SET " . implode(" , ",$queries) . " WHERE " . implode(" AND ", $wheres);
     }
     $this->write_raw($sql);
   }
@@ -250,7 +253,7 @@ class phuDb{
       $field_string = '*';
     }
     else{
-      $field_string = "`".implode('` , `',$fields)."`";
+      $field_string = $this->opentick . implode( $this->closetick . ' , ' . $this->opentick,$fields) . $this->closetick;
     }
     if (!is_array($where)){
       $where_string = '';
@@ -274,10 +277,10 @@ class phuDb{
           return $status;
         }
         if (is_null($value)){
-          $where_elements[] = "`$key` IS NULL";
+          $where_elements[] = "{$this->opentick}{$key}{$this->closetick} IS NULL";
         }
         else{
-          $where_elements[] = "`{$key}`={$value}";
+          $where_elements[] = "{$this->opentick}{$key}{$this->closetick}={$value}";
         }
       }
       $where_string = "WHERE " . implode(' AND ', $where_elements);
@@ -286,15 +289,15 @@ class phuDb{
       $groupby_string = '';
     }
     else{
-      $groupby_string = "GROUP BY `".implode('` , `', $groupby)."`";
+      $groupby_string = "GROUP BY {$this->opentick}".implode($this->closetick . ' , ' . $this->opentick , $groupby). $this->closetick;
     }
     if (!is_array($sortby)){
       $sortby_string = '';
     }
     else{
-      $sortby_string = "ORDER BY `".implode('` , `', $sortby)."`";
+      $sortby_string = "ORDER BY {$this->opentick}" . implode($this->closetick . ' , ' . $this->opentick, $sortby) . $this->closetick;
     }
-    $sql = "SELECT {$field_string} FROM `{$table}` {$where_string} {$groupby_string} {$sortby_string}";
+    $sql = "SELECT {$field_string} FROM {$this->opentick}{$table}{$this->closetick} {$where_string} {$groupby_string} {$sortby_string}";
     $this->fetch_raw($sql, $id);
   }
 

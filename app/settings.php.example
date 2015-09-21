@@ -35,7 +35,7 @@
  *   public $db = array(
  *     'host' => null,
  *     'type' => 'sqlite',
- *     'name' => '/path/to/sqlitefile.db',
+ *     'name' => DOC_ROOT . '/path/to/sqlitefile.db',
  *     'user' => null,
  *     'pass' => null,
  *     'port' => null,
