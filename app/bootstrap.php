@@ -5,7 +5,7 @@
  * Bootstrap file for Serverphu
  *
  * This bootstraps the entire application by collecting inputs and using them
- * to access the router, which will then access appropriate controllers
+ * to access the router, which will then access appropriate classes
  *
  * @category   Bootstrap
  * @package    Serverphu

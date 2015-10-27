@@ -129,7 +129,7 @@ class phuDb{
         $dsn = "mysql:{$host}{$port};dbname={$this->db['name']}";
         $username = $this->db['user'];
         $password = $this->db['pass'];
-        $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8');  
+        $options = null;
         $this->opentick = $this->closetick = '`';
       }
       // PostgreSQL setup
@@ -146,6 +146,10 @@ class phuDb{
       }
       try{
         $this->pdo = new PDO($dsn, $username, $password, $options);
+        if ($this->db['type'] == 'sqlite'){
+          $this->pdo->exec("PRAGMA foreign_keys = 1");
+        }
+        $this->pdo->exec("SET NAMES utf8");
       }
       catch (Exception $e){
         $this->error = 9999;
@@ -239,6 +243,48 @@ class phuDb{
   }
 
   /**
+   * "Half-baked" database query (way to use same code for all DB engines)
+   *
+   * @param string $sql Half-baked SQL Query (using specified format for conversion)
+   * @param string $tick Delimiter to separate environment variables and table names
+   */
+  public function query_hb($sql, $tick = '`', $type = 'write', $id=NULL){
+    if ($tick != null && $tick != ''){
+      $fragments = explode($tick, $sql);
+      $count = count($fragments);
+      $query = '';
+      if ($count > 1){
+        foreach($fragments as $i => $fragment){
+          if ($i % 2 == 0 && $i < $count - 1){
+            $query .= $fragment . $this->opentick;
+          }
+          elseif($i % 2 ==1 && $i < $count - 1){
+            $query .= $fragment . $this->closetick;
+          }
+          else{
+            $query .= $fragment;
+          }
+        }
+      }
+      else{
+        $query = $sql;
+      }
+    }
+    else{
+      $query = $sql;
+    }
+    if($type == 'write'){
+      $this->write_raw($query);
+    }
+    elseif($type == 'fetch'){
+      $this->fetch_raw($query);
+    }
+    else{
+      $this->fetch_raw("SOMETHING BAD");
+    }
+  }
+
+  /**
    * Fetches array of table data (uses the raw fetch to do the actual db fetch)
    * 
    * @param string $table Table where info is coming from
@@ -306,7 +352,7 @@ class phuDb{
   /**
    * Raw Database fetch: creating an array of table data
    * 
-   * @param string $query raw query to send to the database
+   * @param string $sql raw query to send to the database
    * @param string $id Optional field to use as index instead of numeric index
    */
   public function fetch_raw($sql, $id=NULL){
